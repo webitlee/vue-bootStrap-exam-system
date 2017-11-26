@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-  name: 'Index',
+  name: 'nav',
   data () {
     return {
       

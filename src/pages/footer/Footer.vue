@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  name: 'Index',
+  name: 'footer',
   data () {
     return {
       
