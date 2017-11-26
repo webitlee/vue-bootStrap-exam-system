@@ -17,14 +17,14 @@
               </div>
               <div class="form-group">
                 <label class="col-xs-12 col-sm-3 control-label">性别：</label>
-                <div class="col-xs-12 col-sm-9">
-                  <label class="radio-inline">
-                    <input type="radio" name="sex" value="1" checked> 男
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="sex" value="2"> 女
-                  </label>
-                </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <label class="radio-inline">
+                      <input v-model="sex" type="radio" name="sex" value="1"/> 男
+                    </label>
+                    <label class="radio-inline">
+                      <input v-model="sex" type="radio" name="sex" value="2"/> 女
+                    </label>
+                  </div>
               </div>
               <div class="form-group">
                 <label class="col-xs-12 col-sm-3 control-label">考题类型：</label>
@@ -56,9 +56,10 @@ export default {
   name: 'login',
   data () {
     return {
-      man : true
+      sex : 1,
+      type : ['--请选择--', '前端', 'java', 'Node.js']
     }
-  }
+  },
 }
 </script>
 
