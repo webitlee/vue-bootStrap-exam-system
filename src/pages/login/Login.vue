@@ -37,8 +37,8 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="form-submit">确定</button>
-            <button type="button" class="btn btn-default">取消</button>
+            <button type="button" class="btn btn-primary" @click="formSubmit">确定</button>
+            <button type="button" class="btn btn-default" @click="formCancel">取消</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -61,6 +61,9 @@ export default {
   methods : {
     formSubmit : function(){
       console.log(this.axios);
+    },
+    formCancel : function(){
+      location.reload();
     }
 
   }

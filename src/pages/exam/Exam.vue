@@ -5,15 +5,12 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title text-center">输入考生信息</h4>
+            <h4 class="modal-title text-center">第1题共100题</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <label for="ename" class="col-xs-12 col-sm-3 control-label">姓名：</label>
-                <div class="col-xs-12 col-sm-9">
-                  <input type="text" class="form-control" id="ename" placeholder="输入姓名">
-                </div>
+                <p class="col-xs-12">我是第一题</p>
               </div>
               <div class="form-group">
                 <label class="col-xs-12 col-sm-3 control-label">性别：</label>
@@ -53,7 +50,7 @@
 
 <script>
 export default {
-  name: 'login',
+  name: 'exam',
   data () {
     return {
       sex : 1,
