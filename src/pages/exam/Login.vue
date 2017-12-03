@@ -29,15 +29,18 @@
               <div class="form-group">
                 <label class="col-xs-12 col-sm-3 control-label">考题类型：</label>
                 <div class="col-xs-12 col-sm-9">
-                  <select class="form-control" name="type" v-model="type">
-                    <option v-for="(item, index) in types" :value="index" :key="index">{{item}}</option>
+                  <select class="form-control" name="type">
+                    <option value="0">--请选择--</option>
+                    <option value="1">前端</option>
+                    <option value="2">java</option>
+                    <option value="3">Node.js</option>
                   </select>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="form-submit">确定</button>
+            <button type="button" class="btn btn-primary">确定</button>
             <button type="button" class="btn btn-default">取消</button>
           </div>
         </div><!-- /.modal-content -->
@@ -54,14 +57,11 @@ export default {
   data () {
     return {
       sex : 1,
-      types : ['--请选择--', '前端', 'java', 'Node.js'],
-      type : 0
+      type : ['--请选择--', '前端', 'java', 'Node.js']
     }
   },
   methods : {
-    formSubmit : function(){
-      console.log(this.axios);
-    }
+    
 
   }
 }
