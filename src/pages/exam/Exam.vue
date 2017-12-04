@@ -1,51 +1,45 @@
 <template>
-   <div class="row">
-     <div class="col-xs-12">
-     <div id="login" class="modal fade in" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title text-center">第1题共100题</h4>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3>
+              第
+              <span class="text-danger">{{num}}</span>
+              题，共
+              <span class="text-danger">{{sum}}</span>
+              题
+            </h3>
           </div>
-          <div class="modal-body">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <p class="col-xs-12">我是第一题</p>
+          <div class="panel-body">
+            <p>{{title}}</p>
+            <p>{{content}}</p>
+            <p class="text-primary">答案：</p>
+            <template v-if="type === 0">
+              <div class="radio" v-for="(item, index) in formatRadioAnswers" :key="index">
+                <label>
+                  <input v-if="index === 0" v-model="radioValue" type="radio" name="answers" :value="index" checked/>
+                  <input v-else v-model="radioValue" type="radio" name="answers" :value="index"/>
+                  {{item}}
+                </label>
               </div>
-              <div class="form-group">
-                <label class="col-xs-12 col-sm-3 control-label">性别：</label>
-                  <div class="col-xs-12 col-sm-9">
-                    <label class="radio-inline">
-                      <input v-model="sex" type="radio" name="sex" value="1"/> 男
-                    </label>
-                    <label class="radio-inline">
-                      <input  v-model="sex" type="radio" name="sex" value="2"/> 女
-                    </label>
-                  </div>
-              </div>
-              <div class="form-group">
-                <label class="col-xs-12 col-sm-3 control-label">考题类型：</label>
-                <div class="col-xs-12 col-sm-9">
-                  <select class="form-control" name="type">
-                    <option value="0">--请选择--</option>
-                    <option value="1">前端</option>
-                    <option value="2">java</option>
-                    <option value="3">Node.js</option>
-                  </select>
-                </div>
-              </div>
-            </form>
+            </template>
+            <template v-else-if="type === 1">
+             <div class="checkbox" v-for="(item, index) in formatCheckboxAnswers" :key="index">
+              <label>
+                <input type="checkbox" v-model="checkboxValue" name="checkboxAnswer" :value="index">
+                {{item.answer}}
+              </label>
+            </div>
+            </template>
+            <a class="btn btn-success">下一题</a>
+            <a class="btn btn-success">上一题</a>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary">确定</button>
-            <button type="button" class="btn btn-default">取消</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-       
-     </div>
-   </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,21 +47,65 @@ export default {
   name: 'exam',
   data () {
     return {
-      sex : 1,
-      type : ['--请选择--', '前端', 'java', 'Node.js']
+      num : 1,
+      sum : 100,
+      type : 1, //0为radio,1为checkbox
+      title : '下面的代码会在 console 输出神马？',
+      content : `(function(){
+                  var a = b = 3;
+                })(); `,
+      radioAnswers : ['undefined', '3', '空字符串', 'null'],
+      radioValue : 0,
+      checkboxAnswers : [
+        {
+          answer : 'undefined',
+          checked : false
+        },
+        {
+          answer : '3',
+          checked : false
+        },
+        {
+          answer : '空字符串',
+          checked : false
+        },
+        {
+          answer : 'null',
+          checked : false
+        }
+      ],
+      checkboxValue:[]
     }
   },
+  computed : {
+      formatRadioAnswers : function(){
+        var formatArr = [];
+        var obj = {};
+        for(var i = 0, len = this.radioAnswers.length; i < len; i++){
+         formatArr.push(`${String.fromCharCode(65 + i)}.${this.radioAnswers[i]}`);
+        }
+        return formatArr;
+      },
+      formatCheckboxAnswers : function(){
+        var formatArr = [];
+        var obj = {};
+        for(var i = 0, len = this.checkboxAnswers.length; i < len; i++){
+          obj = this.checkboxAnswers[i];
+          obj.answer = `${String.fromCharCode(65 + i)}.${obj.answer}`;
+            formatArr.push(obj);
+        }
+        return formatArr;
+      }
+  },
   methods : {
-    
-
+    a : function(){
+      console.log(this.checkboxValue);
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #login{
-    background-color:rgba(51,51,51,0.7);
-    display:block;
-  }
+ 
 </style>
