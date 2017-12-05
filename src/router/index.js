@@ -8,12 +8,13 @@ import Score from '@/pages/score/Score';
 import Mistakes from '@/pages/mistakes/Mistakes';
 import UploadExam from '@/pages/upload_exam/Upload_exam';
 import ModifyExam from '@/pages/modify_exam/Modify_exam';
+import ListExam from '@/pages/list_exam/List_exam';
 
 Vue.use(Router)
 
 export default new Router({
   mode : 'history',
-  props : ['mistakeId'],
+  props : ['id', 'mistakeId'],
   routes: [
     {
       path: '/',
@@ -74,7 +75,16 @@ export default new Router({
       path : '/modify',
       name : 'modify_exam',
       components : {
-        defalut : ModifyExam,
+        default : ModifyExam,
+        nav : Nav,
+        footer : Footer
+      }
+    },
+    {
+      path : '/list',
+      name : 'list_exam',
+      components : {
+        default : ListExam,
         nav : Nav,
         footer : Footer
       }
