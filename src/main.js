@@ -9,6 +9,7 @@ import './assets/css/bootstrap.min.css';
 import './assets/js/bootstrap.min';
 
 Vue.prototype.axios = axios;
+Vue.prototype.router = router;
 
 Vue.config.productionTip = false;
 
