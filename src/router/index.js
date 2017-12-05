@@ -71,7 +71,7 @@ export default new Router({
       }
     },
     {
-      path : 'modify',
+      path : '/modify',
       name : 'modify_exam',
       components : {
         defalut : ModifyExam,
