@@ -6,6 +6,8 @@ import Login from '@/pages/login/Login';
 import Exam from '@/pages/exam/Exam';
 import Score from '@/pages/score/Score';
 import Mistakes from '@/pages/mistakes/Mistakes';
+import UploadExam from '@/pages/upload_exam/Upload_exam';
+import ModifyExam from '@/pages/modify_exam/Modify_exam';
 
 Vue.use(Router)
 
@@ -57,6 +59,24 @@ export default new Router({
         default :  true,
         nav : false,
         footer : false
+      }
+    },
+    {
+      path : '/upload',
+      name : 'upload_exam',
+      components : {
+        default : UploadExam,
+        nav : Nav,
+        footer : Footer
+      }
+    },
+    {
+      path : 'modify',
+      name : 'modify_exam',
+      components : {
+        defalut : ModifyExam,
+        nav : Nav,
+        footer : Footer
       }
     }
   ]
