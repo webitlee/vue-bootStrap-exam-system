@@ -14,7 +14,6 @@ Vue.use(Router)
 
 export default new Router({
   mode : 'history',
-  props : ['id', 'mistakeId', 'modifyId'],
   routes: [
     {
       path: '/',
@@ -86,12 +85,17 @@ export default new Router({
       }
     },
     {
-      path : '/list',
+      path : '/list/:page',
       name : 'list_exam',
       components : {
         default : ListExam,
         nav : Nav,
         footer : Footer
+      },
+      props : {
+        default : true,
+        nav : false,
+        footer : false
       }
     }
   ]

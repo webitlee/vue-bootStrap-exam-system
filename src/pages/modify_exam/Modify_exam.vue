@@ -65,6 +65,7 @@
 <script>
 export default {
   name: 'modify_exam',
+  props : ['modifyId'],
   data () {
     return {
       title : '执行如下代码会输入神马？',

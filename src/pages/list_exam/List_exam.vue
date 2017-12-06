@@ -1,30 +1,31 @@
 <template>
   <div class="container">
+  <admin-login></admin-login>
     <div class="row">
       <div class="col-xs-12">
         <div class="table-responsive of-visible">
           <table class="table table-bordered table-striped table-hover table-condensed">
             <thead>
               <tr>
-                <th class="text-right">编号</th>
-                <th class="text-center" width="200">标题</th>
-                <th class="text-center">内容</th>
-                <th class="text-center">类型</th>
-                <th class="text-center">考题范围</th>
-                <th class="text-center" width="200">操作</th>
+                <th class="text-right v-middle">编号</th>
+                <th class="text-center v-middle" width="200">标题</th>
+                <th class="text-center v-middle">内容</th>
+                <th class="text-center v-middle">类型</th>
+                <th class="text-center v-middle">考题范围</th>
+                <th class="text-center v-middle" width="200">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in items" :key="index">
-                <td class="text-right">{{item.id}}</td>
-                <td class="text-center">{{item.title}}</td>
-                <td class="text-center">{{item.title}}</td>
-                <td class="text-center" v-if="item.type === 0">单选</td>
-                <td class="text-center" v-else-if="item.type === 1">多选</td>
-                <td class="text-center" v-if="item.scope === 1">前端</td>
-                <td class="text-center" v-else-if="item.scope === 2">后端</td>
-                <td class="text-center" v-else-if="item.scope === 3">Node.js</td>
-                <td class="text-center">
+                <td class="text-right v-middle">{{item.id}}</td>
+                <td class="text-center v-middle">{{item.title}}</td>
+                <td class="text-center v-middle">{{item.title}}</td>
+                <td class="text-center v-middle" v-if="item.type === 0">单选</td>
+                <td class="text-center v-middle" v-else-if="item.type === 1">多选</td>
+                <td class="text-center v-middle" v-if="item.scope === 1">前端</td>
+                <td class="text-center v-middle" v-else-if="item.scope === 2">后端</td>
+                <td class="text-center v-middle" v-else-if="item.scope === 3">Node.js</td>
+                <td class="text-center v-middle">
                   <div class="btn-group">
                     <a :href="item.editUrl" class="btn btn-primary">编辑</a>
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -42,9 +43,9 @@
           </table>
         </div>
         <div class="btn-group">
-          <a class="btn btn-default">&lt;上一页</a>
-          <a class="btn" :class="{'btn-primary' : item, 'btn-default' : !item}" v-for="(item, index) in pages" :key="index">{{index + 1}}</a>
-          <a class="btn btn-default">下一页&gt;</a>
+          <a class="btn btn-default" :href="prevPage()">&lt;上一页</a>
+          <a class="btn" :href="'/list/' + (index + 1)" :class="{'btn-primary' : item, 'btn-default' : !item}" v-for="(item, index) in pages" :key="index">{{index + 1}}</a>
+          <a class="btn btn-default" :href="nextPage()">下一页&gt;</a>
         </div>
       </div>
     </div>
@@ -52,8 +53,10 @@
 </template>
 
 <script>
+import adminLogin from '@/components/admin_login/Admin_login';
 export default {
   name: 'list_exam',
+  props : ['page'],
   data () {
     return {
      items : [
@@ -72,7 +75,7 @@ export default {
          content : 'alert(1111);',
          type : 1, //0为单选，1为多选
          scope : 2, //1为前端，2为后端，3为Node
-         editUrl : '/modify/1',
+         editUrl : '/modify/1', 
          removeUrl : '/remove/1'
        }
      ],
@@ -81,14 +84,42 @@ export default {
      pages : [true, false, false]
     }
   },
+  components : {
+    adminLogin
+  },
   computed : {
-
+    
   },
   methods : {
     a : function(){
       console.log(this.checkboxValue);
+    },
+    prevPage : function(){
+      var active = 0;
+      for(var i = 0, len = this.pages.length; i < len; i++){
+        if(this.pages[i]){
+          active = i + 1;
+          break;
+        }
+      }
+      if(active <= 1){
+        return 'javascript:;';
+      }
+      return '/list/' + (active - 1);
+    },
+    nextPage : function(){
+      var active = 0;
+      for(var i = 0, len = this.pages.length; i < len; i++){
+        if(this.pages[i]){
+          active = i + 1;
+          break;
+        }
+      }
+      if(active >= this.pages.length){
+        return 'javascript:;';
+      }
+      return '/list/' + (active + 1);
     }
-
   }
 }
 </script>
@@ -100,5 +131,8 @@ export default {
   }
   .of-visible{
     overflow: visible;
+  }
+  .v-middle{
+    vertical-align:middle;
   }
 </style>
