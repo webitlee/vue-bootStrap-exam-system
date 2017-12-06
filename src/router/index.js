@@ -14,7 +14,7 @@ Vue.use(Router)
 
 export default new Router({
   mode : 'history',
-  props : ['id', 'mistakeId'],
+  props : ['id', 'mistakeId', 'modifyId'],
   routes: [
     {
       path: '/',
@@ -72,12 +72,17 @@ export default new Router({
       }
     },
     {
-      path : '/modify',
+      path : '/modify/:modifyId',
       name : 'modify_exam',
       components : {
         default : ModifyExam,
         nav : Nav,
         footer : Footer
+      },
+      props : {
+        default : true,
+        nav : false,
+        footer : false
       }
     },
     {
