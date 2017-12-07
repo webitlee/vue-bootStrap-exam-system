@@ -9,6 +9,7 @@ import Mistakes from '@/pages/mistakes/Mistakes';
 import UploadExam from '@/pages/upload_exam/Upload_exam';
 import ModifyExam from '@/pages/modify_exam/Modify_exam';
 import ListExam from '@/pages/list_exam/List_exam';
+import AdminLogin from '@/pages/admin_login/Admin_login';
 
 Vue.use(Router)
 
@@ -94,6 +95,15 @@ export default new Router({
       },
       props : {
         default : true,
+        nav : false,
+        footer : false
+      }
+    },
+    {
+      path : '/admin/login',
+      name : 'admin_login',
+      components : {
+        default : AdminLogin,
         nav : false,
         footer : false
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-  <admin-login></admin-login>
+  <left-menu></left-menu>
     <div class="row">
       <div class="col-xs-12">
         <div class="table-responsive of-visible">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import adminLogin from '@/components/admin_login/Admin_login';
+import leftMenu from '@/components/admin_left_menu/Admin_left_menu';
 export default {
   name: 'list_exam',
   props : ['page'],
@@ -85,7 +85,7 @@ export default {
     }
   },
   components : {
-    adminLogin
+    leftMenu
   },
   computed : {
     

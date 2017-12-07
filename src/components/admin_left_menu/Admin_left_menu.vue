@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'login',
+  name: 'admin_left_menu',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
