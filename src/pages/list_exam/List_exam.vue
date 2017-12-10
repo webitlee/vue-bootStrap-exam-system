@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-  <left-menu></left-menu>
     <div class="row">
-      <div class="col-xs-12">
+      <left-menu :isList="true"></left-menu>
+      <div class="col-xs-12 col-sm-9">
         <div class="table-responsive of-visible">
           <table class="table table-bordered table-striped table-hover table-condensed">
             <thead>
@@ -34,7 +34,6 @@
                     <ul class="dropdown-menu">
                       <li><a :href="item.removeUrl">删除</a></li>
                       <li class="divider"></li>
-                      <li><a href="#">xx00</a></li>
                     </ul>
                   </div>
                 </td>
@@ -81,7 +80,7 @@ export default {
      ],
      types : ['单选', '多选'],
      scopes : ['前端', '后端', 'Node.js'],
-     pages : [true, false, false]
+     pages : [true, false, false],
     }
   },
   components : {

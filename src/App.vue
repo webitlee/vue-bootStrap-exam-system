@@ -1,15 +1,21 @@
 <template>
   <div id="app">
-    <router-view name="nav"></router-view>
+    <new-nav></new-nav>
     <router-view></router-view>
-    <router-view name="footer"></router-view>
+    <new-footer></new-footer>
     
   </div>
 </template>
 
 <script>
+import newNav from '@/pages/nav/Nav';
+import newFooter from '@/pages/footer/Footer';
 export default {
-  name: 'app'
+  name: 'app',
+  components : {
+    newNav,
+    newFooter
+  }
 }
 </script>
 

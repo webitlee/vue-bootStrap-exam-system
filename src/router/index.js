@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Nav from '@/pages/nav/Nav';
-import Footer from '@/pages/footer/Footer';
 import Login from '@/pages/login/Login';
 import Exam from '@/pages/exam/Exam';
 import Score from '@/pages/score/Score';
@@ -20,92 +18,68 @@ export default new Router({
       path: '/',
       name: 'index',
       components: {
-        default : Login,
-        nav : Nav,
-        footer : Footer
+        default : Login
       }
     },
     {
       path : '/exam/:id',
       name : 'exam',
       components : {
-        default : Exam,
-        nav : Nav,
-        footer : Footer
+        default : Exam
       },
       props : {
-        default : true,
-        nav : false,
-        footer : false
+        default : true
       }
     },
     {
       path : '/score',
       name : 'score',
       components : {
-        default : Score,
-        nav : Nav,
-        footer : Footer
+        default : Score
       }
     },
     {
       path : '/mistakes/:mistakeId',
       name : 'mistakes',
       components : {
-        default : Mistakes,
-        nav : Nav,
-        footer : Footer
+        default : Mistakes
       },
       props : {
-        default :  true,
-        nav : false,
-        footer : false
+        default :  true
       }
     },
     {
       path : '/upload',
       name : 'upload_exam',
       components : {
-        default : UploadExam,
-        nav : Nav,
-        footer : Footer
+        default : UploadExam
       }
     },
     {
       path : '/modify/:modifyId',
       name : 'modify_exam',
       components : {
-        default : ModifyExam,
-        nav : Nav,
-        footer : Footer
+        default : ModifyExam
       },
       props : {
-        default : true,
-        nav : false,
-        footer : false
+        default : true
       }
     },
     {
       path : '/list/:page',
       name : 'list_exam',
       components : {
-        default : ListExam,
-        nav : Nav,
-        footer : Footer
+        default : ListExam
       },
       props : {
-        default : true,
-        nav : false,
-        footer : false
+        default : true
       }
     },
     {
       path : '/admin/login',
       name : 'admin_login',
       components : {
-        default : AdminLogin,
-        nav : false,
-        footer : false
+        default : AdminLogin
       }
     }
   ]
