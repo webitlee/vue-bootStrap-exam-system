@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="javascript:;">
           <img id="logo" src="/src/assets/imgs/logo.png"/>
       </a>
       <p class="navbar-text">面试考题系统</p>
@@ -18,7 +18,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">管理员后台</a></li>
+        <li><a href="javascript:;" @click="toAdmin">管理员后台</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -30,6 +30,11 @@ export default {
   data () {
     return {
       
+    }
+  },
+  methods : {
+    toAdmin(){
+      this.router.push('/admin');
     }
   }
 }

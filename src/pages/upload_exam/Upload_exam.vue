@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="row">
-      <left-menu :isUpload="true"></left-menu>
       <div class="col-xs-12 col-sm-9">
         <div class="panel panel-default">
           <div class="panel-heading">上传考题</div>
@@ -64,7 +63,6 @@
 </template>
 
 <script>
-import leftMenu from '@/components/admin_left_menu/Admin_left_menu'
 export default {
   name: 'upload_exam',
   data () {
@@ -77,9 +75,6 @@ export default {
       optionsStr : '111',
       optionsArr : []
     }
-  },
-  components : {
-    leftMenu
   },
   computed : {
 

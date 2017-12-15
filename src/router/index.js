@@ -12,75 +12,46 @@ import AdminLogin from '@/pages/admin_login/Admin_login';
 Vue.use(Router)
 
 export default new Router({
-  mode : 'history',
   routes: [
     {
       path: '/',
       name: 'index',
-      components: {
-        default : Login
-      }
+      component: Login
     },
     {
-      path : '/exam/:id',
+      path : '/exam',
       name : 'exam',
-      components : {
-        default : Exam
-      },
-      props : {
-        default : true
-      }
+      component : Exam
     },
     {
       path : '/score',
       name : 'score',
-      components : {
-        default : Score
-      }
+      component : Score
     },
     {
-      path : '/mistakes/:mistakeId',
+      path : '/mistakes',
       name : 'mistakes',
-      components : {
-        default : Mistakes
-      },
-      props : {
-        default :  true
-      }
+      component : Mistakes
     },
     {
       path : '/upload',
       name : 'upload_exam',
-      components : {
-        default : UploadExam
-      }
+      component : UploadExam
     },
     {
-      path : '/modify/:modifyId',
+      path : '/modify',
       name : 'modify_exam',
-      components : {
-        default : ModifyExam
-      },
-      props : {
-        default : true
-      }
+      component : ModifyExam
     },
     {
-      path : '/list/:page',
+      path : '/list',
       name : 'list_exam',
-      components : {
-        default : ListExam
-      },
-      props : {
-        default : true
-      }
+      component : ListExam
     },
     {
-      path : '/admin/login',
+      path : '/admin',
       name : 'admin_login',
-      components : {
-        default : AdminLogin
-      }
+      component : AdminLogin
     }
   ]
 })

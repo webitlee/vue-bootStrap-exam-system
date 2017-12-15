@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary">登陆</button>
+                <a href="javascript:;" class="btn btn-primary" @click="login">登陆</a>
               </div>
             </div>
           </form>
@@ -56,7 +56,10 @@ export default {
     }
   },
   methods : {
-
+    login(){
+      //处理逻辑
+      this.router.push('/list');
+    }
   }
 }
 </script>

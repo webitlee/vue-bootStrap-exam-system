@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="row">
-      <left-menu :isList="true"></left-menu>
       <div class="col-xs-12 col-sm-9">
         <div class="table-responsive of-visible">
           <table class="table table-bordered table-striped table-hover table-condensed">
@@ -43,7 +42,7 @@
         </div>
         <div class="btn-group">
           <a class="btn btn-default" :href="prevPage()">&lt;上一页</a>
-          <a class="btn" :href="'/list/' + (index + 1)" :class="{'btn-primary' : item, 'btn-default' : !item}" v-for="(item, index) in pages" :key="index">{{index + 1}}</a>
+          <a class="btn" href="/list" v-for="(item, index) in pages" :key="index">{{index + 1}}</a>
           <a class="btn btn-default" :href="nextPage()">下一页&gt;</a>
         </div>
       </div>
@@ -52,10 +51,8 @@
 </template>
 
 <script>
-import leftMenu from '@/components/admin_left_menu/Admin_left_menu';
 export default {
   name: 'list_exam',
-  props : ['page'],
   data () {
     return {
      items : [
@@ -80,11 +77,8 @@ export default {
      ],
      types : ['单选', '多选'],
      scopes : ['前端', '后端', 'Node.js'],
-     pages : [true, false, false],
+     pages : [true, false, false]
     }
-  },
-  components : {
-    leftMenu
   },
   computed : {
     
@@ -94,30 +88,10 @@ export default {
       console.log(this.checkboxValue);
     },
     prevPage : function(){
-      var active = 0;
-      for(var i = 0, len = this.pages.length; i < len; i++){
-        if(this.pages[i]){
-          active = i + 1;
-          break;
-        }
-      }
-      if(active <= 1){
-        return 'javascript:;';
-      }
-      return '/list/' + (active - 1);
+      console.log(0);
     },
     nextPage : function(){
-      var active = 0;
-      for(var i = 0, len = this.pages.length; i < len; i++){
-        if(this.pages[i]){
-          active = i + 1;
-          break;
-        }
-      }
-      if(active >= this.pages.length){
-        return 'javascript:;';
-      }
-      return '/list/' + (active + 1);
+      console.log(1);
     }
   }
 }

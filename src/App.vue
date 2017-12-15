@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import newNav from '@/pages/nav/Nav';
-import newFooter from '@/pages/footer/Footer';
+import newNav from '@/components/nav/Nav';
+import newFooter from '@/components/footer/Footer';
 export default {
   name: 'app',
   components : {

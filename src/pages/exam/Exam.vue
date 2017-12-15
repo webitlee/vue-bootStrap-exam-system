@@ -45,7 +45,6 @@
 <script>
 export default {
   name: 'exam',
-  props : ['id'],
   data () {
     return {
       num : 1,
@@ -75,11 +74,11 @@ export default {
     },
     //下一题
     nextExam : function(){
-      console.log(this.id);
+
     },
     //上一题
     prevExam : function(){
-      history.back();
+
     }
   }
 }

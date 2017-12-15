@@ -52,7 +52,6 @@
 <script>
 export default {
   name: 'mistakes',
-  props : ['mistakeId'],
   data () {
     return {
       //当前考题数
@@ -113,12 +112,10 @@ export default {
     },
     //下一题
     nextMistake : function(){
-      console.log(this.mistakeId);
       this.router.go(1);
     },
     //上一题
     prevMistake : function(){
-      console.log(this.mistakeId);
       this.router.back();
     },
     //是否是已经选中的选项

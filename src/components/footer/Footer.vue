@@ -2,9 +2,9 @@
   <footer class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="container">
       <ul class="mt-20 mb-20 ts-14">
-        <li class="inline-block mr-20"><a class="tc-999" href="javascript:;">我的CSDN博客</a></li>
-        <li class="inline-block mr-20"><a class="tc-999" href="javascript:;">GitHub 仓库</a></li>
-        <li class="inline-block mr-20"><a class="tc-999" href="javascript:;">个人博客</a></li>
+        <li class="inline-block mr-20"><a class="tc-999" href="http://blog.csdn.net/qq_19891827?ref=toolbar" target="_blank">我的CSDN博客</a></li>
+        <li class="inline-block mr-20"><a class="tc-999" href="https://github.com/webitlee" target="_blank">GitHub 仓库</a></li>
+        <li class="inline-block mr-20"><a class="tc-999" href="http://lyn2.ecs22.tomcats.pw/" target="_blank">个人博客</a></li>
         <li class="inline-block"><a class="tc-999" href="javascript:;">邮箱：webitlee@163.com</a></li>
       </ul>
     </div>

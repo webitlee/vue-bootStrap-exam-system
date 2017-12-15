@@ -24,7 +24,7 @@
         </h4>
         <p class="text-center">
           <a class="btn btn-danger" href="javascript:;" @click="mistakes">查看错题</a>
-          <a class="btn btn-primary" href="/">再考一次</a>
+          <a class="btn btn-primary" href="javascript:;" @click="again">再考一次</a>
         </p>
       </div>
     </div>
@@ -48,7 +48,10 @@ export default {
     },
     //查看错题
     mistakes : function(){
-      console.log(111);
+      this.router.push('/mistakes');
+    },
+    again(){
+      this.router.push('/');
     }
   }
 }

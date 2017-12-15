@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
-        <div id="login" class="modal fade in" role="dialog">
-          <div class="modal-dialog" role="document">
+        <div id="login" class="modal fade in">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title text-center">输入考生信息</h4>
@@ -61,6 +61,7 @@ export default {
   },
   methods : {
     formSubmit : function(){
+      this.router.push('/exam');
       console.log(this.axios);
     },
     formCancel : function(){

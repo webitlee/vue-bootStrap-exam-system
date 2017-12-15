@@ -2,13 +2,13 @@
   <div class="col-xs-12 col-sm-3">
     <ul class="list-group">
       <li class="list-group-item text-center">
-        <a :class="{'tc-333' : !isList || false}" href="/list/1">
+        <a href="/list">
           <i class="glyphicon glyphicon-th-list"></i>
           考题列表
         </a>
       </li>
       <li class="list-group-item text-center">
-        <a :class="{'tc-333' : !isUpload || false}" href="/upload">
+        <a href="/upload">
           <i class="glyphicon glyphicon-plus"></i>
           添加考题
         </a>
