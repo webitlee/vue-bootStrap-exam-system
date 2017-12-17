@@ -1,4 +1,4 @@
-<<template>
+<template>
   <nav class="navbar navbar-default">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -9,10 +9,10 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="javascript:;">
+      <a class="navbar-brand" href="javascript:;" @click="toIndex">
           <img id="logo" src="/src/assets/imgs/logo.png"/>
       </a>
-      <p class="navbar-text">面试考题系统</p>
+      <p class="navbar-text pointer" @click="toIndex">面试考题系统</p>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -35,6 +35,9 @@ export default {
   methods : {
     toAdmin(){
       this.router.push('/admin');
+    },
+    toIndex(){
+      this.router.push('/');
     }
   }
 }
@@ -43,5 +46,8 @@ export default {
   #logo{
       width:20px;
       height:20px;
+  }
+  .pointer{
+    cursor : pointer;
   }
 </style>

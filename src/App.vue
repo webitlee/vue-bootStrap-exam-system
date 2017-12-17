@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <new-nav></new-nav>
-    <router-view></router-view>
+    <div class="container">
+      <div class="row">
+        <router-view></router-view>
+      </div>
+    </div>
     <new-footer></new-footer>
     
   </div>

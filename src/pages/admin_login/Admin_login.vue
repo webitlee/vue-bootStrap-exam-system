@@ -1,44 +1,38 @@
 <template>
-  <div class="w100p bg-f5" :style="{height : windowHeight}">
-   <div class="container">
-     <div class="row">
-        <div class="col-xs-12 col-sm-push-3 col-sm-6 mt-100">
-          <div class="panel panel-default">
-          <div class="panel-heading text-center bg-41 tc-white">登陆到管路员中心</div>
-          <div class="panel-body">
-            <form class="form-horizontal">
-            <div class="form-group">
-              <label for="account" class="col-sm-3 control-label">帐号：</label>
-              <div class="col-sm-9">
-                <input type="text" class="form-control" id="text" placeholder="输入帐号">
-              </div>
+  <div class="col-xs-12 col-sm-push-3 col-sm-6 mt-100">
+    <div class="panel panel-default">
+      <div class="panel-heading text-center bg-41 tc-white">登陆到管路员中心</div>
+      <div class="panel-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="account" class="col-sm-3 control-label">帐号：</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="text" placeholder="输入帐号">
             </div>
-            <div class="form-group">
-              <label for="pwd" class="col-sm-3 control-label">密码：</label>
-              <div class="col-sm-9">
-                <input type="password" class="form-control" id="pwd" placeholder="输入密码">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-9">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox"> 记住密码
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-9">
-                <a href="javascript:;" class="btn btn-primary" @click="login">登陆</a>
-              </div>
-            </div>
-          </form>
           </div>
-        </div>
-        </div>
-     </div>
-   </div>
+          <div class="form-group">
+            <label for="pwd" class="col-sm-3 control-label">密码：</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control" id="pwd" placeholder="输入密码">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> 记住密码
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <a href="javascript:;" class="btn btn-primary" @click="login">登陆</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,15 +44,10 @@ export default {
       
     }
   },
-  computed : {
-    windowHeight : function(){
-      return window.innerHeight + 'px';
-    }
-  },
   methods : {
     login(){
       //处理逻辑
-      this.router.push('/list');
+      this.router.push('/leftMenu/list');
     }
   }
 }
@@ -84,6 +73,11 @@ export default {
   .tc-white{
     color:#fff;
   }
+</style>
+<style>
+  body{
+      background-color:#f5f5f5;
+    }
 </style>
 
 

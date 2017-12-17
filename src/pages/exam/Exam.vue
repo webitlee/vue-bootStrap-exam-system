@@ -1,42 +1,38 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3>
-              第
-              <span class="text-danger">{{num}}</span>
-              题，共
-              <span class="text-danger">{{sum}}</span>
-              题
-            </h3>
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>
+          第
+          <span class="text-danger">{{num}}</span>
+          题，共
+          <span class="text-danger">{{sum}}</span>
+          题
+        </h3>
+      </div>
+      <div class="panel-body">
+        <p>{{title}}</p>
+        <p>{{content}}</p>
+        <p class="text-primary">选项：</p>
+        <template v-if="type === 0">
+          <div class="radio" v-for="(item, index) in formatOptions" :key="index">
+            <label>
+              <input v-if="index === 0" v-model="radioValue" type="radio" name="answers" :value="index" checked/>
+              <input v-else v-model="radioValue" type="radio" name="answers" :value="index"/>
+              {{item}}
+            </label>
           </div>
-          <div class="panel-body">
-            <p>{{title}}</p>
-            <p>{{content}}</p>
-            <p class="text-primary">选项：</p>
-            <template v-if="type === 0">
-              <div class="radio" v-for="(item, index) in formatOptions" :key="index">
-                <label>
-                  <input v-if="index === 0" v-model="radioValue" type="radio" name="answers" :value="index" checked/>
-                  <input v-else v-model="radioValue" type="radio" name="answers" :value="index"/>
-                  {{item}}
-                </label>
-              </div>
-            </template>
-            <template v-else-if="type === 1">
-             <div class="checkbox" v-for="(item, index) in formatOptions" :key="index">
-              <label>
-                <input type="checkbox" v-model="checkboxValue" name="checkboxAnswer" :value="index">
-                {{item}}
-              </label>
-            </div>
-            </template>
-            <a @click="prevExam" class="btn btn-success">上一题</a>
-            <a @click="nextExam" class="btn btn-success">下一题</a>
-          </div>
+        </template>
+        <template v-else-if="type === 1">
+          <div class="checkbox" v-for="(item, index) in formatOptions" :key="index">
+          <label>
+            <input type="checkbox" v-model="checkboxValue" name="checkboxAnswer" :value="index">
+            {{item}}
+          </label>
         </div>
+        </template>
+        <a @click="prevExam" class="btn btn-success">上一题</a>
+        <a @click="nextExam" class="btn btn-success">下一题</a>
       </div>
     </div>
   </div>
