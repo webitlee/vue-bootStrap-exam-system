@@ -29,7 +29,7 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:;">删除</a></li>
+                  <li><a href="javascript:;" @click="remove(item.id)">删除</a></li>
                   <li class="divider"></li>
                 </ul>
               </div>
@@ -40,7 +40,7 @@
     </div>
     <div class="btn-group">
       <a class="btn btn-default" href="javascript:;" @click="prevPage">&lt;上一页</a>
-      <a class="btn btn-default" href=" javascript:;" v-for="(item, index) in pages" :key="index">{{index + 1}}</a>
+      <a class="btn" href=" javascript:;" :class="currentPage(item)" v-for="item in pageCount" :key="item" @click="toPage(item)">{{item}}</a>
       <a class="btn btn-default" href="javascript::" @click="nextPage">下一页&gt;</a>
     </div>
   </div>
@@ -73,22 +73,41 @@ export default {
      ],
      types : ['单选', '多选'],
      scopes : ['前端', '后端', 'Node.js'],
-     pages : [true, false, false]
+     pageCount : 10,
+     active : 5
     }
   },
   methods : {
-    a : function(){
-      console.log(this.checkboxValue);
-    },
     prevPage : function(){
-      console.log(0);
+      if(this.active <= 1){
+        return;
+      }
+      this.active -= 1;
+      this.currentPage(this.active);
     },
     nextPage : function(){
-      console.log(1);
+      if(this.active >= this.pageCount){
+        return;
+      }
+      this.active += 1;
+      this.currentPage(this.active);
     },
-    edit(index){
-      this.router.push('/modify?id=' + index);
+    currentPage(index){
+      if(index === this.active){
+        return 'btn-primary';
+      }
+      return 'btn-default';
     },
+    toPage(index){
+      this.active = index;
+      this.currentPage(index);
+    },
+    edit(id){
+      this.router.push('/modify?id=' + id);
+    },
+    remove(id){
+      console.log(id);
+    }
   }
 }
 </script>
