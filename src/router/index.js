@@ -9,7 +9,7 @@ import ModifyExam from '@/pages/modify_exam/Modify_exam';
 import ListExam from '@/pages/list_exam/List_exam';
 import AdminLogin from '@/pages/admin_login/Admin_login';
 import LeftMenu from '@/components/admin_left_menu/Admin_left_menu';
-
+import Error404 from '@/pages/error_404/Error_404';
 Vue.use(Router)
 
 export default new Router({
@@ -60,6 +60,11 @@ export default new Router({
           component : UploadExam
         }
       ]
+    },
+    {
+      path : '*',
+      name : 'error_404',
+      component : Error404
     }
   ]
 })
