@@ -1,5 +1,8 @@
 <template>
-  <div class="col-xs-12">
+  <div class="col-xs-12" v-if="complete">
+    <loading></loading>
+  </div>
+  <div class="col-xs-12" v-else>
     <div class="panel panel-default">
       <div class="panel-heading">上传考题</div>
       <div class="panel-body">
@@ -59,6 +62,7 @@
 </template>
 
 <script>
+import loading from '@/components/loading/Loading';
 export default {
   name: 'modify_exam',
   data () {
@@ -69,8 +73,12 @@ export default {
       scope : ['--请选择--', '前端', '后端', 'Node.js'],
       chooseScope : 0,
       optionsStr : '111',
-      optionsArr : []
+      optionsArr : [],
+      complete : false
     }
+  },
+  components : {
+    loading
   },
   methods : {
     a : function(){

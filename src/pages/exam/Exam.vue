@@ -1,6 +1,7 @@
 <template>
   <div class="col-xs-12">
-    <div class="panel panel-default">
+    <loading v-if="compelete"></loading>
+    <div class="panel panel-default" v-else>
       <div class="panel-heading">
         <h3>
           第
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import loading from '@/components/loading/Loading';
 export default {
   name: 'exam',
   data () {
@@ -52,8 +54,12 @@ export default {
                 })(); `,
       options : ['undefined', '3', '空字符串', 'null'],
       radioValue : 0,
-      checkboxValue:[]
+      checkboxValue:[],
+      compelete : false
     }
+  },
+  components : {
+    loading
   },
   computed : {
       formatOptions : function(){

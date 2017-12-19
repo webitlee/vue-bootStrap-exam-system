@@ -1,6 +1,7 @@
 <template>
   <div class="col-xs-12">
-    <div class="panel panel-default">
+    <loading v-if="complete"></loading>
+    <div class="panel panel-default" v-else>
       <div class="panel-heading">
         <h3>
           第
@@ -46,6 +47,7 @@
 </template>
 
 <script>
+import loading from '@/components/loading/Loading';
 export default {
   name: 'mistakes',
   data () {
@@ -68,7 +70,11 @@ export default {
       radioValue : 2,
       //选中的复选框
       checkboxValue:[1, 3],
+      complete : false
     }
+  },
+  components : {
+    loading
   },
   computed : {
       //格式化选项

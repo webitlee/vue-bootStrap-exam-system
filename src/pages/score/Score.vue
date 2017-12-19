@@ -1,5 +1,8 @@
 <template>
-  <div class="col-xs-12">
+  <div class="col-xs-12" v-if="complete">
+    <loading></loading>
+  </div>
+  <div class="col-xs-12" v-else>
     <h2 class="text-center">
       <span class="glyphicon glyphicon-thumbs-up text-primary"></span>
     </h2>
@@ -28,12 +31,16 @@
 </template>
 
 <script>
+import loading from '@/components/loading/Loading';
 export default {
   name: 'score',
   data () {
     return {
-      
+      complete : false
     }
+  },
+  components : {
+    loading
   },
   computed : {
      

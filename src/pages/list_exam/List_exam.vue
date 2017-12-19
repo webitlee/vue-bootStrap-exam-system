@@ -1,5 +1,8 @@
 <template>
-  <div class="col-xs-12 col-sm-9">
+  <div class="col-xs-12 col-sm-9" v-if="complete">
+    <loading></loading>
+  </div>
+  <div class="col-xs-12 col-sm-9" v-else>
     <div class="table-responsive of-visible">
       <table class="table table-bordered table-striped table-hover table-condensed">
         <thead>
@@ -47,6 +50,7 @@
 </template>
 
 <script>
+import loading from '@/components/loading/Loading';
 export default {
   name: 'list_exam',
   data () {
@@ -74,8 +78,12 @@ export default {
      types : ['单选', '多选'],
      scopes : ['前端', '后端', 'Node.js'],
      pageCount : 10,
-     active : 5
+     active : 5,
+     complete : false
     }
+  },
+  components : {
+    loading
   },
   methods : {
     prevPage : function(){
