@@ -56,9 +56,14 @@ export default {
     }
   },
   methods : {
-    formSubmit : function(){
-      this.router.push('/exam');
-      console.log(this.axios);
+    formSubmit(){
+      this.axios.get('http://localhost:8888/login').then((data)=>{
+        console.log(data.data.message);
+      }).catch((data)=>{
+        console.log(data.message);
+      })
+      //this.router.push('/exam');
+      //console.log(this.axios);
     },
     formCancel : function(){
       location.reload();
