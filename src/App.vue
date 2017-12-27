@@ -7,7 +7,6 @@
       </div>
     </div>
     <new-footer></new-footer>
-    
   </div>
 </template>
 

@@ -58,7 +58,9 @@ export default {
   methods : {
     formSubmit(){
       this.axios.get('http://localhost:8888/login').then((data)=>{
-        console.log(data.data.message);
+        if(data.data.error){
+          console.log(data.data.message);
+        }
       }).catch((data)=>{
         console.log(data.message);
       })
