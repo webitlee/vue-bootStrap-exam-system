@@ -11,17 +11,17 @@
               <div class="form-group">
                 <label for="ename" class="col-xs-12 col-sm-3 control-label">姓名：</label>
                 <div class="col-xs-12 col-sm-9">
-                  <input type="text" class="form-control" id="ename" placeholder="输入姓名">
+                  <input type="text" class="form-control" id="ename" placeholder="输入姓名" v-model="name">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-xs-12 col-sm-3 control-label">性别：</label>
                   <div class="col-xs-12 col-sm-9">
                     <label class="radio-inline">
-                      <input v-model="sex" type="radio" name="sex" value="1"/> 男
+                      <input v-model="sex" type="radio" name="sex" value="true"/> 男
                     </label>
                     <label class="radio-inline">
-                      <input  v-model="sex" type="radio" name="sex" value="2"/> 女
+                      <input  v-model="sex" type="radio" name="sex" value="false"/> 女
                     </label>
                   </div>
               </div>
@@ -50,22 +50,32 @@ export default {
   name: 'login',
   data () {
     return {
-      sex : 1,
+      name : '',
+      sex : true,
       types : ['--请选择--', '前端', 'java', 'Node.js'],
       type : 0
     }
   },
   methods : {
     formSubmit(){
-      this.axios.get('http://localhost:8888/login').then((data)=>{
-        if(data.data.error){
+      if(!this.name){
+        alert('请填写考生姓名');
+        return;
+      } 
+      if(!this.type){
+        alert('请选择考题类型');
+        return;
+      }
+      this.axios.post('http://localhost:8888/login', {
+        name : this.name,
+        type : this.type,
+        gender : this.sex
+      }).then((data)=>{
           console.log(data.data.message);
-        }
       }).catch((data)=>{
-        console.log(data.message);
+        console.log(data);
       })
       //this.router.push('/exam');
-      //console.log(this.axios);
     },
     formCancel : function(){
       location.reload();
