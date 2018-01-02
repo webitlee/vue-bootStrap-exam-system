@@ -18,10 +18,10 @@
                 <label class="col-xs-12 col-sm-3 control-label">性别：</label>
                   <div class="col-xs-12 col-sm-9">
                     <label class="radio-inline">
-                      <input v-model="sex" type="radio" name="sex" value="true"/> 男
+                      <input v-model="sex" type="radio" name="sex" :value="true"/> 男
                     </label>
                     <label class="radio-inline">
-                      <input  v-model="sex" type="radio" name="sex" value="false"/> 女
+                      <input  v-model="sex" type="radio" name="sex" :value="false"/> 女
                     </label>
                   </div>
               </div>
@@ -56,7 +56,17 @@ export default {
       type : 0
     }
   },
+  created(){
+    this.getTypes();
+  },
   methods : {
+    getTypes(){
+      this.axios.get('http://localhost:8888/getTypes').then((data)=>{
+        console.log(data.data.message);
+      }).catch((data)=>{
+        console.log(data);
+      })
+    },
     formSubmit(){
       if(!this.name){
         alert('请填写考生姓名');
@@ -71,9 +81,9 @@ export default {
         type : this.type,
         gender : this.sex
       }).then((data)=>{
-          console.log(data.data.message);
+        alert(data.data.message);
       }).catch((data)=>{
-        console.log(data);
+        alert('考生信息提交失败， 原因：' + data);
       })
       //this.router.push('/exam');
     },
