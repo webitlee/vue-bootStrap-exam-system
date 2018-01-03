@@ -28,8 +28,9 @@
               <div class="form-group">
                 <label class="col-xs-12 col-sm-3 control-label">考题类型：</label>
                 <div class="col-xs-12 col-sm-9">
-                  <select class="form-control" name="type" v-model="type">
-                    <option v-for="(item, index) in types" :value="index" :key="index">{{item}}</option>
+                  <select class="form-control" name="scope" v-model="scope">
+                    <option value="0">--请选择--</option>
+                    <option v-for="item in scopes" :value="item.id" :key="item.id">{{item.name}}</option>
                   </select>
                 </div>
               </div>
@@ -52,17 +53,17 @@ export default {
     return {
       name : '',
       sex : true,
-      types : ['--请选择--', '前端', 'java', 'Node.js'],
-      type : 0
+      scopes : null,
+      scope : 0
     }
   },
   created(){
-    this.getTypes();
+    this.getScopes();
   },
   methods : {
-    getTypes(){
-      this.axios.get('http://localhost:8888/getTypes').then((data)=>{
-        console.log(data.data.message);
+    getScopes(){
+      this.axios.get('http://localhost:8888/getScopes').then((data)=>{
+        this.scopes = data.data;
       }).catch((data)=>{
         console.log(data);
       })
@@ -72,20 +73,20 @@ export default {
         alert('请填写考生姓名');
         return;
       } 
-      if(!this.type){
+      if(!this.scope){
         alert('请选择考题类型');
         return;
       }
       this.axios.post('http://localhost:8888/login', {
         name : this.name,
-        type : this.type,
+        scope : this.scope,
         gender : this.sex
       }).then((data)=>{
         alert(data.data.message);
+        this.router.push('/exam');
       }).catch((data)=>{
         alert('考生信息提交失败， 原因：' + data);
       })
-      //this.router.push('/exam');
     },
     formCancel : function(){
       location.reload();
