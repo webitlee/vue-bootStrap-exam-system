@@ -1,5 +1,6 @@
 <template>
-  <div class="col-xs-12 col-sm-9">
+  <loading v-if="isLoading"></loading>
+  <div class="col-xs-12 col-sm-9" v-else>
     <div class="panel panel-default">
       <div class="panel-heading">上传考题</div>
       <div class="panel-body">
@@ -43,7 +44,8 @@
             <label for="scope" class="col-sm-3 control-label">考题范围：</label>
             <div class="col-sm-6">
               <select name="scope" class="form-control" v-model="chooseScope">
-                <option v-for="(item, index) in scope" :key="index" :value="index">{{item}}</option>
+                <option value="0">--请选择--</option>
+                <option v-for="item in scopes" :key="item.id" :value="item.id">{{item.name}}</option>
               </select>
             </div>
           </div>
@@ -59,33 +61,74 @@
 </template>
 
 <script>
+import loading from '@/components/loading/Loading';
 export default {
   name: 'upload_exam',
   data () {
     return {
-      title : '执行如下代码会输入神马？',
-      content : 'function(a,b){alert(111)}',
+      isLoading : true,
+      title : '',
+      content : '',
       type : 1,
-      scope : ['--请选择--', '前端', '后端', 'Node.js'],
+      scopes : null,
       chooseScope : 0,
-      optionsStr : '111',
+      optionsStr : '',
       optionsArr : []
     }
   },
-  computed : {
-
+  components : {
+    loading
+  },
+  created(){
+    this.axios.get('http://localhost:8888/getScopes').then((result)=>{
+      this.scopes = result.data;
+      this.isLoading = false;
+    }).catch((result)=>{
+      alert('获取考题范围失败，原因：' + result);
+    })
   },
   methods : {
-    a : function(){
-      console.log(this.checkboxValue);
-    },
     formatOptions : function(){
       this.optionsArr = this.optionsStr.split(/\s*\n\s*/g);
       console.log(this.optionsArr);
       return this.optionsArr;
     },
     upload : function(){
-      console.log(this.axios);
+      if(!this.title){
+        alert('请填写考题标题');
+        return;
+      }
+      if(!this.content){
+        alert('请填写考题内容');
+        return;
+      }
+      if(!this.optionsStr){
+        alert('请填写考题选项');
+        return;
+      }
+      if(this.optionsArr.length <=1){
+        alert('考题选项应为2个以上');
+        return;
+      }
+      if(this.type <= 0){
+        alert('请选择考题类型');
+        return;
+      }
+      if(this.chooseScope <= 0){
+        alert('请选择所属考题范围');
+        return;
+      }
+      this.axios.post('http://localhost:8888/addExam', {
+        title : this.title,
+        content : this.content,
+        options : this.optionsArr,
+        type : this.type,
+        scope : this.chooseScope
+      }).then((result)=>{
+        alert(result.data.message);
+      }).catch((result)=>{
+        alert('添加考题失败，原因：' + result);
+      })
     }
   }
 }

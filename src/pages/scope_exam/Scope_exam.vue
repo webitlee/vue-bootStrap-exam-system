@@ -135,17 +135,30 @@ export default {
       this.scopeName = name;
     },
     //修改考题范围
-    editScope(id){
+    editScope(){
+      if(!this.scopeName){
+        alert('请填写修改之后的考题范围名称');
+        return;
+      }
       this.axios.post('http://localhost:8888/uploadScope', {
-        id
+        id : this.scopeId,
+        name : this.scopeName
       }).then((result)=>{
-        console.log(result);
+        alert(result.data.message);
+        location.reload();
       }).catch((result)=>{
         alert('修改范围名称失败，原因：' + result);
       })
     },
     remove(id){
-      console.log(id);
+      this.axios.post('http://localhost:8888/removeScope', {
+        id
+      }).then((result)=>{
+        alert(result.data.message);
+        location.reload();
+      }).catch((result)=>{
+        alert('考题范围删除失败，原因：' + result);
+      })
     }
   }
 }

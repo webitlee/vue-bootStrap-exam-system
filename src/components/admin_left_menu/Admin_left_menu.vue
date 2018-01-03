@@ -16,7 +16,7 @@
         </li>
         <li class="list-group-item">
           <a href="javascript:;" :class="{'tc-666' : !isScope}" @click="toScope">
-            <i class="glyphicon glyphicon-plus"></i>
+            <i class="glyphicon glyphicon-wrench"></i>
             考题范围管理
           </a>
         </li>
