@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xs-12 col-sm-9" v-if="complete">
+  <div class="col-xs-12 col-sm-9" v-if="isLoading">
     <loading></loading>
   </div>
   <div class="col-xs-12 col-sm-9" v-else>
@@ -16,15 +16,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index">
+          <tr v-for="item in exams" :key="item.id">
             <td class="text-right v-middle">{{item.id}}</td>
             <td class="text-center v-middle">{{item.title}}</td>
-            <td class="text-center v-middle">{{item.title}}</td>
-            <td class="text-center v-middle" v-if="item.type === 0">单选</td>
-            <td class="text-center v-middle" v-else-if="item.type === 1">多选</td>
-            <td class="text-center v-middle" v-if="item.scope === 1">前端</td>
-            <td class="text-center v-middle" v-else-if="item.scope === 2">后端</td>
-            <td class="text-center v-middle" v-else-if="item.scope === 3">Node.js</td>
+            <td class="text-center v-middle">{{item.content}}</td>
+            <td class="text-center v-middle" v-if="item.type === 1">单选</td>
+            <td class="text-center v-middle" v-else-if="item.type === 2">多选</td>
+            <td class="text-center v-middle">{{item.scope.name}}</td>
             <td class="text-center v-middle">
               <div class="btn-group">
                 <a href="javascript:;" class="btn btn-primary" @click="edit(item.id)">编辑</a>
@@ -55,43 +53,40 @@ export default {
   name: 'list_exam',
   data () {
     return {
-     items : [
-       {
-         id : 2,
-         title : '以下内容会输出神马',
-         content : 'function(){}',
-         type : 0, //0为单选，1为多选
-         scope : 1, //1为前端，2为后端，3为Node
-         editUrl : '/modify',
-         removeUrl : '/remove'
-       },
-       {
-         id : 1,
-         title : '你猜我猜你猜不猜',
-         content : 'alert(1111);',
-         type : 1, //0为单选，1为多选
-         scope : 2, //1为前端，2为后端，3为Node
-         editUrl : '/modify', 
-         removeUrl : '/remove'
-       }
-     ],
-     types : ['单选', '多选'],
-     scopes : ['前端', '后端', 'Node.js'],
-     pageCount : 10,
-     active : 5,
-     complete : false
+     exams : null,
+     pageCount : 0,
+     active : 1,
+     limit : 10,
+     isLoading : true
     }
   },
   components : {
     loading
   },
+  created(){
+    this.getExams();
+  },
   methods : {
+    getExams(){
+      this.axios.post('http://localhost:8888/getExams', {
+        offset : this.active - 1,
+        limit : this.limit
+      }).then((result)=>{
+        this.isLoading = false;
+        this.pageCount = Math.ceil(result.data.count / this.limit);
+        this.exams = result.data.rows;
+      }).catch((result)=>{
+        this.isLoading = false;
+        alert('获取考题列表失败，原因：' + result);
+      })
+    },
     prevPage : function(){
       if(this.active <= 1){
         return;
       }
       this.active -= 1;
       this.currentPage(this.active);
+      this.getExams();
     },
     nextPage : function(){
       if(this.active >= this.pageCount){
@@ -99,6 +94,7 @@ export default {
       }
       this.active += 1;
       this.currentPage(this.active);
+      this.getExams();
     },
     currentPage(index){
       if(index === this.active){
@@ -109,9 +105,10 @@ export default {
     toPage(index){
       this.active = index;
       this.currentPage(index);
+      this.getExams();
     },
     edit(id){
-      this.router.push('/modify?id=' + id);
+      this.router.push('/leftMenu/modify?id=' + id);
     },
     remove(id){
       console.log(id);

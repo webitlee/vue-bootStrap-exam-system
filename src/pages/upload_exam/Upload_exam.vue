@@ -126,6 +126,7 @@ export default {
         scope : this.chooseScope
       }).then((result)=>{
         alert(result.data.message);
+        location.reload();
       }).catch((result)=>{
         alert('添加考题失败，原因：' + result);
       })

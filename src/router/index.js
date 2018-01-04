@@ -36,11 +36,6 @@ export default new Router({
       component : Mistakes
     },
     {
-      path : '/modify',
-      name : 'modify_exam',
-      component : ModifyExam
-    },
-    {
       path : '/admin',
       name : 'admin_login',
       component : AdminLogin
@@ -64,6 +59,11 @@ export default new Router({
           path : 'scope',
           name : 'scope_exam',
           component : ScopeExam
+        },
+        {
+          path : 'modify',
+          name : 'modify_exam',
+          component : ModifyExam
         }
       ]
     },
