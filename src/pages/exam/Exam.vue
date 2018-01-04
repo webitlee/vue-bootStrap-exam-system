@@ -1,6 +1,6 @@
 <template>
   <div class="col-xs-12">
-    <loading v-if="compelete"></loading>
+    <loading v-if="isLoading"></loading>
     <div class="panel panel-default" v-else>
       <div class="panel-heading">
         <h3>
@@ -25,9 +25,9 @@
           </div>
         </template>
         <template v-else-if="type === 1">
-          <div class="checkbox" v-for="(item, index) in formatOptions" :key="index">
+          <div class="checkbox" v-for="item in formatOptions" :key="item.id">
           <label>
-            <input type="checkbox" v-model="checkboxValue" name="checkboxAnswer" :value="index">
+            <input type="checkbox" v-model="checkboxValue" name="checkboxAnswer" :value="item.id">
             {{item}}
           </label>
         </div>
@@ -55,7 +55,7 @@ export default {
       options : ['undefined', '3', '空字符串', 'null'],
       radioValue : 0,
       checkboxValue:[],
-      compelete : false
+      isLoading : false
     }
   },
   components : {
@@ -71,9 +71,6 @@ export default {
       }
   },
   methods : {
-    a : function(){
-      console.log(this.checkboxValue);
-    },
     //下一题
     nextExam : function(){
 

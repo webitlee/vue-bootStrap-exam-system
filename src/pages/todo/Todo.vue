@@ -3,29 +3,29 @@
     <loading></loading>
   </div>
   <div class="col-xs-12 col-sm-9" v-else>
-    <div class="table-responsive of-visible">
+    <div class="row">
+      <div class="col-xs-12">
+        <a class="btn btn-success pull-right" href="javascript:;" data-toggle="modal" data-target="#modal_add">添加待办事项</a>
+      </div>
+    </div>
+    <div class="table-responsive of-visible mt-15">
       <table class="table table-bordered table-striped table-hover table-condensed">
         <thead>
           <tr>
             <th class="text-right v-middle">编号</th>
-            <th class="text-center v-middle" width="200">标题</th>
-            <th class="text-center v-middle">内容</th>
-            <th class="text-center v-middle">类型</th>
-            <th class="text-center v-middle">考题范围</th>
+            <th class="text-center v-middle">事项</th>
+            <th class="text-center v-middle">进度</th>
             <th class="text-center v-middle" width="200">操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in exams" :key="item.id">
+          <tr v-for="item in todos" :key="item.id">
             <td class="text-right v-middle">{{item.id}}</td>
-            <td class="text-center v-middle">{{item.title}}</td>
-            <td class="text-center v-middle">{{item.content}}</td>
-            <td class="text-center v-middle" v-if="item.type === 1">单选</td>
-            <td class="text-center v-middle" v-else-if="item.type === 2">多选</td>
-            <td class="text-center v-middle">{{item.scope.name}}</td>
+            <td class="text-center v-middle">{{item.option}}</td>
+            <td class="text-center v-middle">{{item.status}}</td>
             <td class="text-center v-middle">
               <div class="btn-group">
-                <a href="javascript:;" class="btn btn-primary" @click="edit(item.id)">编辑</a>
+                <a href="javascript:;" class="btn btn-primary" @click="edit(item.id)">完成</a>
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                   <span class="caret"></span>
                 </button>
@@ -44,6 +44,29 @@
       <a class="btn" href=" javascript:;" :class="currentPage(item)" v-for="item in pageCount" :key="item" @click="toPage(item)">{{item}}</a>
       <a class="btn btn-default" href="javascript::" @click="nextPage">下一页&gt;</a>
     </div>
+    <!-- 添加考题范围 -->
+    <div class="modal fade" id="modal_add">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">添加待办事项</h4>
+          </div>
+          <div class="modal-body">
+            <form action="javascript:;">
+              <div class="form-group">
+                <label for="name">事项名称：</label>
+                <input type="text" class="form-control" id="name" placeholder="填写事项名称" v-model="newTodo"/>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-primary" href="javascript:;" @click="addTodo">保存</a>
+            <a class="btn btn-default" data-dismiss="modal">关闭</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,21 +76,30 @@ export default {
   name: 'list_exam',
   data () {
     return {
-     exams : null,
+     todos : [{
+       id : 2,
+       option : '密码功能开发',
+       status : '待办'
+     },{
+       id : 1,
+       option : '其他功能开发',
+       status : '已完成'
+     }],
      pageCount : 0,
      active : 1,
      limit : 10,
-     isLoading : true
+     newTodo : '',
+     isLoading : false
     }
   },
   components : {
     loading
   },
   created(){
-    this.getExams();
+    //this.getTodos();
   },
   methods : {
-    getExams(){
+    getTodos(){
       this.axios.post('http://localhost:8888/getExams', {
         offset : this.active - 1,
         limit : this.limit
@@ -86,7 +118,7 @@ export default {
       }
       this.active -= 1;
       this.currentPage(this.active);
-      this.getExams();
+      this.getTodos();
     },
     nextPage : function(){
       if(this.active >= this.pageCount){
@@ -94,7 +126,7 @@ export default {
       }
       this.active += 1;
       this.currentPage(this.active);
-      this.getExams();
+      this.getTodos();
     },
     currentPage(index){
       if(index === this.active){
@@ -102,10 +134,13 @@ export default {
       }
       return 'btn-default';
     },
+    addTodo(){
+
+    },
     toPage(index){
       this.active = index;
       this.currentPage(index);
-      this.getExams();
+      this.getTodos();
     },
     edit(id){
       this.router.push('/leftMenu/modify?id=' + id);
@@ -129,6 +164,9 @@ export default {
 <style scoped>
   .h100{
     height:100px;
+  }
+  .mt-15{
+    margin-top:15px;
   }
   .of-visible{
     overflow: visible;

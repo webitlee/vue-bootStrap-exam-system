@@ -20,7 +20,7 @@
           <div class="form-group">
             <label for="options" class="col-sm-3 control-label">选项：</label>
             <div class="col-sm-6">
-              <textarea name="options" class="form-control h100" placeholder="输入考题选项：一行一个选项" @blur="formatOptions" v-model="optionsStr"></textarea>
+              <textarea name="options" class="form-control h100" placeholder="输入考题选项：一行一个选项,正确的选项结尾加‘#’" @blur="formatOptions" v-model="optionsStr"></textarea>
             </div>
           </div>
           <div class="form-group">

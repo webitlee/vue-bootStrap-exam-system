@@ -111,6 +111,7 @@ export default {
         id
       }).then((result)=>{
         console.log(result.data);
+        this.isLoading = false;
         this.title = result.data.title;
         this.content = result.data.content;
         var optionsArr = [];
@@ -122,9 +123,8 @@ export default {
         this.type = result.data.type;
         this.chooseScope = result.data.scope_id;
       }).catch((result)=>{
-        alert('获取考题失败，原因：' + result);
-      }).finally(()=>{
         this.isLoading = false;
+        alert('获取考题失败，原因：' + result);
       })
     },
     update(){
