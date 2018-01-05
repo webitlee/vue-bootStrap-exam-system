@@ -183,7 +183,7 @@ export default {
         alert('id不合法');
         return;
       }
-      if(!this.name){
+      if(!this.editName){
         alert('请填写状态名称');
         return;
       }

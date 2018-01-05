@@ -5,7 +5,7 @@
   <div class="col-xs-12 col-sm-9" v-else>
     <div class="row">
       <div class="col-xs-12">
-        <a class="btn btn-success pull-right" href="javascript:;" data-toggle="modal" data-target="#modal_add" @click="getTodoStatus">添加待办事项</a>
+        <a class="btn btn-success pull-right" href="javascript:;" data-toggle="modal" data-target="#modal_add">添加待办事项</a>
       </div>
     </div>
     <div class="table-responsive of-visible mt-15">
@@ -22,10 +22,10 @@
           <tr v-for="item in todos" :key="item.id">
             <td class="text-right v-middle">{{item.id}}</td>
             <td class="text-center v-middle">{{item.option}}</td>
-            <td class="text-center v-middle">{{item.status}}</td>
+            <td class="text-center v-middle">{{item.todo_status.name}}</td>
             <td class="text-center v-middle">
               <div class="btn-group">
-                <a href="javascript:;" class="btn btn-primary" @click="edit(item.id)">完成</a>
+                <a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit" @click="edit(item.id, item.option, item.todo_status.id)">修改</a>
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                   <span class="caret"></span>
                 </button>
@@ -44,7 +44,7 @@
       <a class="btn" href=" javascript:;" :class="currentPage(item)" v-for="item in pageCount" :key="item" @click="toPage(item)">{{item}}</a>
       <a class="btn btn-default" href="javascript::" @click="nextPage">下一页&gt;</a>
     </div>
-    <!-- 添加考题范围 -->
+    <!-- 添加待办事项 -->
     <div class="modal fade" id="modal_add">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -78,6 +78,40 @@
         </div>
       </div>
     </div>
+    <!-- 修改待办事项 -->
+    <div class="modal fade" id="modal_edit">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">修改待办事项</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" action="javascript:;">
+              <div class="form-group">
+                <label for="name" class="col-xs-12 col-sm-3 control-label">事项名称：</label>
+                <div class="col-xs-12 col-sm-9">
+                  <input type="text" class="form-control" id="name" placeholder="填写事项名称" v-model="editTodo"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="col-xs-12 col-sm-3 control-label">状态：</label>
+                <div class="col-xs-12 col-sm-9">
+                  <select class="form-control" v-model="editStatus">
+                    <option value="0">--请选择--</option>
+                    <option v-for="item in status" :value="item.id" :key="item.id">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-primary" href="javascript:;" @click="updateTodo">保存</a>
+            <a class="btn btn-default" data-dismiss="modal">关闭</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -87,20 +121,15 @@ export default {
   name: 'list_exam',
   data () {
     return {
-     todos : [{
-       id : 2,
-       option : '密码功能开发',
-       status : '待办'
-     },{
-       id : 1,
-       option : '其他功能开发',
-       status : '已完成'
-     }],
+     todos : null,
      pageCount : 0,
      active : 1,
      limit : 10,
      newTodo : '',
      newStatus : 0,
+     id : 0,
+     editTodo : '',
+     editStatus : 0,
      statusName : '',
      status : null,
      isLoading : false
@@ -110,15 +139,16 @@ export default {
     loading
   },
   created(){
-    //this.getTodos();
+    this.getTodoStatus();
+    this.getTodos();
   },
   methods : {
+    //获取待办事项状态
     getTodoStatus(){
       this.axios.post('http://localhost:8888/getAllStatus', {
         offset : this.active - 1,
         limit : this.limit
       }).then((result)=>{
-        console.log(result);
         this.isLoading = false;
         this.pageCount = Math.ceil(result.data.count / this.limit);
         this.status = result.data.rows;
@@ -127,17 +157,32 @@ export default {
         alert('获取状态列表失败，原因：' + result);
       })
     },
+    //获取待办事项列表
     getTodos(){
-      this.axios.post('http://localhost:8888/getExams', {
+      this.axios.post('http://localhost:8888/getTodos', {
         offset : this.active - 1,
         limit : this.limit
       }).then((result)=>{
         this.isLoading = false;
         this.pageCount = Math.ceil(result.data.count / this.limit);
-        this.exams = result.data.rows;
+        this.todos = result.data.rows;
       }).catch((result)=>{
         this.isLoading = false;
         alert('获取考题列表失败，原因：' + result);
+      })
+    },
+    //修改待办事项
+    updateTodo(){
+      this.axios.post('http://localhost:8888/updateTodo', {
+        id : this.id,
+        option : this.editTodo,
+        statusId : this.editStatus
+      }).then((result)=>{
+        console.log(result);
+        alert('修改待办事项成功');
+        location.reload();
+      }).catch((result)=>{
+        alert('修改待办事项失败，原因：' + result);
       })
     },
     prevPage : function(){
@@ -162,18 +207,16 @@ export default {
       }
       return 'btn-default';
     },
+    //添加待办事项
     addTodo(){
-
-    },
-    //添加事项状态
-    addStatus(){
-      this.axios.post('http://localhost:8888/addStatus', {
-        name : this.statusName
+      this.axios.post('http://localhost:8888/addTodo', {
+        option : this.newTodo,
+        statusId : this.newStatus
       }).then((result)=>{
-        alert('添加状态成功');
+        alert('添加成功');
         location.reload();
       }).catch((result)=>{
-        alert('添加状态失败，原因：' + result);
+        alert('添加失败，原因：' + result);
       })
     },
     toPage(index){
@@ -181,18 +224,20 @@ export default {
       this.currentPage(index);
       this.getTodos();
     },
-    edit(id){
-      this.router.push('/leftMenu/modify?id=' + id);
+    edit(id, option, statusId){
+      this.id = id,
+      this.editTodo = option,
+      this.editStatus = statusId
     },
     //根据id删除考题
     remove(id){
-      this.axios.post('http://localhost:8888/removeExam', {
+      this.axios.post('http://localhost:8888/removeTodo', {
         id
       }).then((result)=>{
-        alert('考题删除成功');
+        alert('待办事项删除成功');
         location.reload();
       }).catch((result)=>{
-        alert('删除考题失败，原因：' + result);
+        alert('删除待办事项失败，原因：' + result);
       })
     }
   }
@@ -206,9 +251,6 @@ export default {
   }
   .mt-15{
     margin-top:15px;
-  }
-  .mr-20{
-    margin-right:20px;
   }
   .of-visible{
     overflow: visible;
