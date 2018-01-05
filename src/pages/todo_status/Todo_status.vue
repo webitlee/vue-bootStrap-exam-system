@@ -5,7 +5,7 @@
   <div class="col-xs-12 col-sm-9" v-else>
     <div class="row">
       <div class="col-xs-12">
-        <a class="btn btn-success pull-right" href="javascript:;" data-toggle="modal" data-target="#modal_add" @click="getTodoStatus">添加待办事项</a>
+        <a class="btn btn-success pull-right" href="javascript:;" data-toggle="modal" data-target="#modal_add">添加状态</a>
       </div>
     </div>
     <div class="table-responsive of-visible mt-15">
@@ -13,19 +13,17 @@
         <thead>
           <tr>
             <th class="text-right v-middle">编号</th>
-            <th class="text-center v-middle">事项</th>
-            <th class="text-center v-middle">状态</th>
+            <th class="text-center v-middle">状态名称</th>
             <th class="text-center v-middle" width="200">操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in todos" :key="item.id">
+          <tr v-for="item in status" :key="item.id">
             <td class="text-right v-middle">{{item.id}}</td>
-            <td class="text-center v-middle">{{item.option}}</td>
-            <td class="text-center v-middle">{{item.status}}</td>
+            <td class="text-center v-middle">{{item.name}}</td>
             <td class="text-center v-middle">
               <div class="btn-group">
-                <a href="javascript:;" class="btn btn-primary" @click="edit(item.id)">完成</a>
+                <a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit" @click="edit(item.id, item.name)">修改</a>
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                   <span class="caret"></span>
                 </button>
@@ -44,35 +42,51 @@
       <a class="btn" href=" javascript:;" :class="currentPage(item)" v-for="item in pageCount" :key="item" @click="toPage(item)">{{item}}</a>
       <a class="btn btn-default" href="javascript::" @click="nextPage">下一页&gt;</a>
     </div>
-    <!-- 添加考题范围 -->
+    <!-- 添加事项状态 -->
     <div class="modal fade" id="modal_add">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">添加待办事项</h4>
+            <h4 class="modal-title">添加状态</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal" action="javascript:;">
               <div class="form-group">
-                <label for="name" class="col-xs-12 col-sm-3 control-label">事项名称：</label>
+                <label for="name" class="col-xs-12 col-sm-3 control-label">状态名称：</label>
                 <div class="col-xs-12 col-sm-9">
-                  <input type="text" class="form-control" id="name" placeholder="填写事项名称" v-model="newTodo"/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="name" class="col-xs-12 col-sm-3 control-label">状态：</label>
-                <div class="col-xs-12 col-sm-9">
-                  <select class="form-control" v-model="newStatus">
-                    <option value="0">--请选择--</option>
-                    <option v-for="item in status" :value="item.id" :key="item.id">{{item.name}}</option>
-                  </select>
+                  <input type="text" class="form-control" id="name" placeholder="填写状态名称" v-model="addName"/>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <a class="btn btn-primary" href="javascript:;" @click="addTodo">保存</a>
+            <a class="btn btn-primary" href="javascript:;" @click="addStatus">保存</a>
+            <a class="btn btn-default" data-dismiss="modal">关闭</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 修改事项状态名称 -->
+    <div class="modal fade" id="modal_edit">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">修改状态名称</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" action="javascript:;">
+              <div class="form-group">
+                <label for="name" class="col-xs-12 col-sm-3 control-label">状态名称：</label>
+                <div class="col-xs-12 col-sm-9">
+                  <input type="text" class="form-control" id="name" placeholder="填写状态名称" v-model="editName"/>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-primary" href="javascript:;" @click="editStatus">保存</a>
             <a class="btn btn-default" data-dismiss="modal">关闭</a>
           </div>
         </div>
@@ -87,22 +101,15 @@ export default {
   name: 'list_exam',
   data () {
     return {
-     todos : [{
-       id : 2,
-       option : '密码功能开发',
-       status : '待办'
-     },{
-       id : 1,
-       option : '其他功能开发',
-       status : '已完成'
-     }],
+     status : null,
      pageCount : 0,
      active : 1,
      limit : 10,
      newTodo : '',
      newStatus : 0,
-     statusName : '',
-     status : null,
+     addName : '',
+     editName : '',
+     id : 0,
      isLoading : false
     }
   },
@@ -110,7 +117,7 @@ export default {
     loading
   },
   created(){
-    //this.getTodos();
+    this.getTodoStatus();
   },
   methods : {
     getTodoStatus(){
@@ -127,26 +134,13 @@ export default {
         alert('获取状态列表失败，原因：' + result);
       })
     },
-    getTodos(){
-      this.axios.post('http://localhost:8888/getExams', {
-        offset : this.active - 1,
-        limit : this.limit
-      }).then((result)=>{
-        this.isLoading = false;
-        this.pageCount = Math.ceil(result.data.count / this.limit);
-        this.exams = result.data.rows;
-      }).catch((result)=>{
-        this.isLoading = false;
-        alert('获取考题列表失败，原因：' + result);
-      })
-    },
     prevPage : function(){
       if(this.active <= 1){
         return;
       }
       this.active -= 1;
       this.currentPage(this.active);
-      this.getTodos();
+      this.getTodoStatus();
     },
     nextPage : function(){
       if(this.active >= this.pageCount){
@@ -154,7 +148,7 @@ export default {
       }
       this.active += 1;
       this.currentPage(this.active);
-      this.getTodos();
+      this.getTodoStatus();
     },
     currentPage(index){
       if(index === this.active){
@@ -162,13 +156,10 @@ export default {
       }
       return 'btn-default';
     },
-    addTodo(){
-
-    },
     //添加事项状态
     addStatus(){
       this.axios.post('http://localhost:8888/addStatus', {
-        name : this.statusName
+        name : this.addName
       }).then((result)=>{
         alert('添加状态成功');
         location.reload();
@@ -181,18 +172,40 @@ export default {
       this.currentPage(index);
       this.getTodos();
     },
-    edit(id){
-      this.router.push('/leftMenu/modify?id=' + id);
+    //为this.id,this.editName赋值
+    edit(id, name){
+      this.id = id;
+      this.editName = name;
+    },
+    //修改状态名称
+    editStatus(){
+      if(this.id <= 0 || isNaN(this.id)){
+        alert('id不合法');
+        return;
+      }
+      if(!this.name){
+        alert('请填写状态名称');
+        return;
+      }
+      this.axios.post('http://localhost:8888/updateStatus', {
+        id : this.id,
+        name : this.editName
+      }).then((result)=>{
+        alert('状态名称修改成功');
+        location.reload();
+      }).catch((result)=>{
+        alert('修改状态名称失败，原因：' + result);
+      })
     },
     //根据id删除考题
     remove(id){
-      this.axios.post('http://localhost:8888/removeExam', {
+      this.axios.post('http://localhost:8888/removeStatus', {
         id
       }).then((result)=>{
-        alert('考题删除成功');
+        alert('状态删除成功');
         location.reload();
       }).catch((result)=>{
-        alert('删除考题失败，原因：' + result);
+        alert('删除状态失败，原因：' + result);
       })
     }
   }

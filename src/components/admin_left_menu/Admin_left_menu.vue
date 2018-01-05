@@ -26,6 +26,12 @@
             待办事项
           </a>
         </li>
+        <li class="list-group-item">
+          <a href="javascript:;" :class="{'tc-666' : !isTodoStatus}" @click="toTodoStatus">
+            <i class="glyphicon glyphicon-text-size"></i>
+            事项状态管理
+          </a>
+        </li>
       </ul>
     </div>
     <router-view></router-view>
@@ -40,7 +46,8 @@ export default {
        isList : true,
        isAdd : false,
        isScope : false,
-       isTodo : false
+       isTodo : false,
+       isTodoStatus : false
     }
   },
   methods : {
@@ -49,6 +56,7 @@ export default {
       this.isAdd = false;
       this.isScope = false;
       this.isTodo = false;
+      this.isTodoStatus = false;
       this.router.push('list');
     },
     toUpload(){
@@ -56,6 +64,7 @@ export default {
       this.isList = false;
       this.isScope = false;
       this.isTodo = false;
+      this.isTodoStatus = false;
       this.router.push('upload');
     },
     toScope(){
@@ -63,6 +72,7 @@ export default {
       this.isList = false;
       this.isAdd = false;
       this.isTodo = false;
+      this.isTodoStatus = false;
       this.router.push('scope');
     },
     toTodo(){
@@ -70,7 +80,16 @@ export default {
       this.isAdd = false;
       this.isScope = false;
       this.isTodo = true;
+      this.isTodoStatus = false;
       this.router.push('todo');
+    },
+    toTodoStatus(){
+      this.isList = false;
+      this.isAdd = false;
+      this.isScope = false;
+      this.isTodo = false;
+      this.isTodoStatus = true;
+      this.router.push('todoStatus');
     }
   }
 }

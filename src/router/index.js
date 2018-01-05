@@ -11,6 +11,7 @@ import AdminLogin from '@/pages/admin_login/Admin_login';
 import LeftMenu from '@/components/admin_left_menu/Admin_left_menu';
 import ScopeExam from '@/pages/scope_exam/Scope_exam';
 import Todo from '@/pages/todo/Todo';
+import TodoStauts from '@/pages/todo_status/Todo_status';
 import Error404 from '@/pages/error_404/Error_404';
 Vue.use(Router)
 
@@ -70,6 +71,11 @@ export default new Router({
           path : 'todo',
           name : 'todo',
           component : Todo
+        },
+        {
+          path : 'todoStatus',
+          name : 'todo_status',
+          component : TodoStauts
         }
       ]
     },
