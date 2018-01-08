@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapActions} from 'vuex';
 export default {
   name: 'login',
   data () {
@@ -61,11 +62,12 @@ export default {
     this.getScopes();
   },
   methods : {
+    ...mapActions(['setUserId']),
     getScopes(){
       this.axios.get('http://localhost:8888/getScopes').then((data)=>{
         this.scopes = data.data;
       }).catch((data)=>{
-        console.log(data);
+        alert('获取考题范围失败，原因：' + data);
       })
     },
     formSubmit(){
@@ -82,7 +84,8 @@ export default {
         scope : this.scope,
         gender : this.sex
       }).then((data)=>{
-        alert(data.data.message);
+        this.setUserId(data.data.id);
+        alert('添加考生信息成功');
         this.router.push('/exam');
       }).catch((data)=>{
         alert('考生信息提交失败， 原因：' + data);
