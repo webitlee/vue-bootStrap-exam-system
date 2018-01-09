@@ -5,15 +5,15 @@
       <div class="panel-heading">
         <h3>
           第
-          <span class="text-danger">{{num}}</span>
+          <span class="text-danger">{{examIndex}}</span>
           题，共
           <span class="text-danger">{{sum}}</span>
           题
         </h3>
       </div>
       <div class="panel-body">
-        <p>{{title}}</p>
-        <p>{{content}}</p>
+        <p>{{exam.title}}</p>
+        <p>{{exam.content}}</p>
         <p class="text-primary">选项：</p>
         <template v-if="type === 0">
           <div class="radio" v-for="(item, index) in formatOptions" :key="index">
@@ -41,12 +41,15 @@
 
 <script>
 import loading from '@/components/loading/Loading';
+import domain from '../../domain/domain';
+import types from '../../domain/types';
 export default {
   name: 'exam',
+  mixins : [domain],
   data () {
     return {
-      num : 1,
       sum : 100,
+      exam : null,
       type : 1, //0为radio,1为checkbox
       title : '下面的代码会在 console 输出神马？',
       content : `(function(){
@@ -55,11 +58,20 @@ export default {
       options : ['undefined', '3', '空字符串', 'null'],
       radioValue : 0,
       checkboxValue:[],
-      isLoading : false
+      examIndex : 1,
+      isLoading : true
     }
   },
   components : {
     loading
+  },
+  async created(){
+    //检测用户是否注册,未注册回到注册页
+    this.userChecked();
+
+    this.getExamIndex();
+    //await this.getExamsRandom();
+    this.getExam();
   },
   computed : {
       formatOptions : function(){
@@ -71,6 +83,33 @@ export default {
       }
   },
   methods : {
+    //获取当前为第几题
+    getExamIndex(){
+      var examIndex = this.sessionGetItem(types.EXAM_INDEX);
+      if(!examIndex){
+      this.sessionSetItem(types.EXAM_INDEX, 1);
+      }else{
+      this.examIndex = examIndex;
+      }
+    },
+    //随机获取指定考题范围的n条数据
+    getExamsRandom(){
+      var scopeId = this.sessionGetItem(types.USER_SCOPE);
+      this.axios.post('http://localhost:8888/getExamsRandom', {
+        scopeId
+      }).then((result)=>{
+        this.sessionSetItem(types.EXAMS, result.data);
+      }).catch((result)=>{
+        alert('随机获取考题失败，原因：' + result);
+      })
+    },
+    //获取考题
+    getExam(){
+      var exams = this.sessionGetItem(types.EXAMS);
+      this.exam = exams[this.examIndex - 1];
+      this.isLoading = false;
+      console.log(this.exam);
+    },
     //下一题
     nextExam : function(){
 

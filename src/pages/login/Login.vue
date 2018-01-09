@@ -47,9 +47,11 @@
 </template>
 
 <script>
-import { mapActions} from 'vuex';
+import domain from '../../domain/domain';
+import types from '../../domain/types';
 export default {
   name: 'login',
+  mixins : [domain],
   data () {
     return {
       name : '',
@@ -62,7 +64,6 @@ export default {
     this.getScopes();
   },
   methods : {
-    ...mapActions(['setUserId']),
     getScopes(){
       this.axios.get('http://localhost:8888/getScopes').then((data)=>{
         this.scopes = data.data;
@@ -84,7 +85,8 @@ export default {
         scope : this.scope,
         gender : this.sex
       }).then((data)=>{
-        this.setUserId(data.data.id);
+        this.sessionSetItem(types.USER_ID, data.data.id);
+        this.sessionSetItem(types.USER_SCOPE, data.data.scope);
         alert('添加考生信息成功');
         this.router.push('/exam');
       }).catch((data)=>{
