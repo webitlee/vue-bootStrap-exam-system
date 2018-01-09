@@ -68,9 +68,8 @@ export default {
   async created(){
     //检测用户是否注册,未注册回到注册页
     this.userChecked();
-
     this.getExamIndex();
-    //await this.getExamsRandom();
+    await this.getExamsRandom();
     this.getExam();
   },
   computed : {
@@ -93,11 +92,15 @@ export default {
       }
     },
     //随机获取指定考题范围的n条数据
-    getExamsRandom(){
+    async getExamsRandom(){
+      if(this.sessionGetItem(types.EXAMS)){
+        return;
+      }
       var scopeId = this.sessionGetItem(types.USER_SCOPE);
-      this.axios.post('http://localhost:8888/getExamsRandom', {
+      await this.axios.post('http://localhost:8888/getExamsRandom', {
         scopeId
       }).then((result)=>{
+        console.log(result.data);
         this.sessionSetItem(types.EXAMS, result.data);
       }).catch((result)=>{
         alert('随机获取考题失败，原因：' + result);
