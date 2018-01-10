@@ -7,7 +7,7 @@
           第
           <span class="text-danger">{{examIndex}}</span>
           题，共
-          <span class="text-danger">{{sum}}</span>
+          <span class="text-danger">{{count}}</span>
           题
         </h3>
       </div>
@@ -15,7 +15,7 @@
         <p>{{exam.title}}</p>
         <p>{{exam.content}}</p>
         <p class="text-primary">选项：</p>
-        <template v-if="type === 0">
+        <template v-if="exam.type === 0">
           <div class="radio" v-for="(item, index) in formatOptions" :key="index">
             <label>
               <input v-if="index === 0" v-model="radioValue" type="radio" name="answers" :value="index" checked/>
@@ -24,11 +24,11 @@
             </label>
           </div>
         </template>
-        <template v-else-if="type === 1">
+        <template v-else-if="exam.type === 1">
           <div class="checkbox" v-for="item in formatOptions" :key="item.id">
           <label>
             <input type="checkbox" v-model="checkboxValue" name="checkboxAnswer" :value="item.id">
-            {{item}}
+            {{item.option}}
           </label>
         </div>
         </template>
@@ -48,14 +48,8 @@ export default {
   mixins : [domain],
   data () {
     return {
-      sum : 100,
+      count : 0,
       exam : null,
-      type : 1, //0为radio,1为checkbox
-      title : '下面的代码会在 console 输出神马？',
-      content : `(function(){
-                  var a = b = 3;
-                })(); `,
-      options : ['undefined', '3', '空字符串', 'null'],
       radioValue : 0,
       checkboxValue:[],
       examIndex : 1,
@@ -68,32 +62,59 @@ export default {
   async created(){
     //检测用户是否注册,未注册回到注册页
     this.userChecked();
-    this.getExamIndex();
+    this.examIndex = this.getExamIndex();
+    this.count = this.getExamCount();
     await this.getExamsRandom();
-    this.getExam();
+    this.exam = this.getExam();
   },
   computed : {
       formatOptions : function(){
         var formatArr = [];
-        for(var i = 0, len = this.options.length; i < len; i++){
-         formatArr.push(`${String.fromCharCode(65 + i)}.${this.options[i]}`);
+        for(var i = 0, len = this.exam.answers.length; i < len; i++){
+          let obj = {
+            id : this.exam.answers[i].id,
+            option : `${String.fromCharCode(65 + i)}.${this.exam.answers[i].option}`
+          };  
+          formatArr.push(obj);
         }
         return formatArr;
       }
   },
   methods : {
-    //获取当前为第几题
+    //从session获取当前为第几题
     getExamIndex(){
       var examIndex = this.sessionGetItem(types.EXAM_INDEX);
       if(!examIndex){
-      this.sessionSetItem(types.EXAM_INDEX, 1);
+        this.sessionSetItem(types.EXAM_INDEX, 1);
+        return 1;
       }else{
-      this.examIndex = examIndex;
+        return examIndex;
       }
+    },
+    //设置当前为第几题到session
+    setExamIndex(examIndex){
+      this.sessionSetItem(types.EXAM_INDEX, examIndex);
+    },
+    //从session获取当前总题数
+    getExamCount(){
+      var examsCount = this.sessionGetItem(types.EXAMS_COUNT);
+      return examsCount;
+    },
+    //从session设置当前总题数
+    setExamCount(count){
+      this.sessionSetItem(types.EXAMS_COUNT, count);
+    },
+    //从session获取所有考题
+    getExams(){
+      return this.sessionGetItem(types.EXAMS);
+    },
+    //设置所有考题到session
+    setExams(exams){
+      this.sessionSetItem(types.EXAMS, exams);
     },
     //随机获取指定考题范围的n条数据
     async getExamsRandom(){
-      if(this.sessionGetItem(types.EXAMS)){
+      if(this.getExams()){
         return;
       }
       var scopeId = this.sessionGetItem(types.USER_SCOPE);
@@ -101,25 +122,36 @@ export default {
         scopeId
       }).then((result)=>{
         console.log(result.data);
-        this.sessionSetItem(types.EXAMS, result.data);
+        this.setExams(result.data.exams);
+        this.count = result.data.count;
+        this.setExamCount(this.count);
       }).catch((result)=>{
         alert('随机获取考题失败，原因：' + result);
       })
     },
-    //获取考题
+    //获取当前考题
     getExam(){
       var exams = this.sessionGetItem(types.EXAMS);
-      this.exam = exams[this.examIndex - 1];
       this.isLoading = false;
-      console.log(this.exam);
+      return exams[this.examIndex - 1];
     },
     //下一题
-    nextExam : function(){
-
+    nextExam(){
+      if(this.examIndex >= this.count){
+        return;
+      }
+      this.examIndex++;
+      this.setExamIndex(this.examIndex);
+      this.exam = this.getExam();
     },
     //上一题
-    prevExam : function(){
-
+    prevExam(){
+      if(this.examIndex <= 1){
+        return;
+      }
+      this.examIndex--;
+      this.setExamIndex(this.examIndex);
+      this.exam = this.getExam();
     }
   }
 }
